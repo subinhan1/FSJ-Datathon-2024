@@ -3,7 +3,40 @@
 
 
 ```{r}
+Denver2022 <- read_csv("2022 PostSeason Denver.csv")
+Denver2023 <- read_csv("2023 Denver Nuggets.csv")
+Denver <- read_csv("PostSeason DenverBySeason.csv")
+
+head(Denver)
 
 
+
+```
+```{r}
+library(data.table)
+library(ggplot2)
+
+DenverTable <- setDT(Denver)
+
+DenverTable[, Tm:=NULL]
+
+DenverOrg = melt(Denver, id.vars="Season")
+
+DenverOrg$Season = factor(DenverOrg$Season, 
+                       levels=c("2021-22", "2022-23"))
+
+
+
+p = ggplot(data=DenverOrg, aes(x=Season, y=value, fill=Season)) +
+    geom_bar(stat="identity") +
+    scale_fill_viridis_d() +
+    facet_wrap(. ~ variable)
+
+```
+
+
+
+```{r}
+p
 ```
 
