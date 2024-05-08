@@ -5,8 +5,9 @@ library(tidyverse)
 
 ```{r}
 library(readr)
-Denver_Nuggets_2023 <- read_csv("2023 Denver Nuggets.csv")
-Denver_Nuggets_2024 <- read_csv("2024 Denver Nuggets Data.csv")
+Denver <- read_csv("Final Dataset.csv")
+
+
 ```
 
 
