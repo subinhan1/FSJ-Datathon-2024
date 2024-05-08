@@ -1,5 +1,5 @@
 ```{r}
-library(ggplot)
+library(ggplot2)
 library(tidyverse)
 ```
 
