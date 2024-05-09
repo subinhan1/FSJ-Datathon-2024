@@ -37,7 +37,7 @@ server <- function(input, output) {
     Seasons <- input$Seasons
     
     # Assuming Denver is your dataset
-    ggplot(data = Denver %>% filter(Tm == c("Denver Nuggets 2024", "Denver Nuggets 2023", "Denver Nuggets 2022", "Denver Nuggets 2021", "Denver Nuggets 2020"))) + 
+    ggplot(data = Denver %>% filter(Tm == "Denver Nuggets")) + 
       geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
       xlab("Seasons")
   })
