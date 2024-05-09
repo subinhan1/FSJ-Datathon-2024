@@ -50,6 +50,40 @@ shinyApp(ui = ui, server = server)
 ```
 
 
+```{r}
+ui <- fluidPage(
+  titlePanel("Comparing League Average by different years"),
+  
+  fluidRow(
+    
+    
+    column(4,
+           varSelectInput("variable", 
+                          "Select Variable to Display", 
+                          data = Denver %>% select("G", "MP", "FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "Age", "PW", "PL", "ORtg", "DRtg", "Pace", "FTr", "3PAr", "TS%", "AeFG%", "ATOV%", "AORB%", "AFT/FGA", "DeFG%", "DTOV%", "DDRB%", "DFT/FGA"))
+    )
+  ),
+  
+  fluidRow(
+    plotOutput("plot")
+  )
+)
+
+server <- function(input, output) {
+  
+  output$plot <- renderPlot({
+    Seasons <- input$Seasons
+    
+    # Assuming Denver is your dataset
+    ggplot(data = Denver %>% filter(Tm == "League Average")) + 
+      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
+      xlab("Seasons")
+  })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+```
 
 
 
