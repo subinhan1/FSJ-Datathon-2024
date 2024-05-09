@@ -1,5 +1,5 @@
 ```{r}
-library(ggplot)
+library(ggplot2)
 library(tidyverse)
 ```
 
@@ -7,10 +7,47 @@ library(tidyverse)
 library(readr)
 Denver <- read_csv("Final Dataset.csv")
 
-
 ```
 
+```{r}
+library(shiny)
+library(ggplot2)
 
+ui <- fluidPage(
+  titlePanel("Comparing Data between 2023 Denver Nuggets and other seasons"),
+  
+  fluidRow(
+    
+    
+    column(4,
+           varSelectInput("variable", 
+                          "Select Variable to Display", 
+                          data = Denver %>% select("G", "MP", "FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "Age", "PW", "PL", "ORtg", "DRtg", "Pace", "FTr", "3PAr", "TS%", "AeFG%", "ATOV%", "AORB%", "AFT/FGA", "DeFG%", "DTOV%", "DDRB%", "DFT/FGA"))
+    )
+  ),
+  
+  fluidRow(
+    plotOutput("plot")
+  )
+)
+
+server <- function(input, output) {
+  
+  output$plot <- renderPlot({
+    Seasons <- input$Seasons
+    
+    # Assuming Denver is your dataset
+    ggplot(data = Denver %>% filter(Tm == c("Denver Nuggets 2024", "Denver Nuggets 2023", "Denver Nuggets 2022", "Denver Nuggets 2021", "Denver Nuggets 2020"))) + 
+      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
+      xlab("Seasons")
+  })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+
+```
 
 
 
