@@ -6,7 +6,7 @@ library(tidyverse)
 ```{r}
 library(readr)
 Denver <- read_csv("Final Dataset.csv")
-
+Player <- read_csv("Player Data.csv")
 ```
 
 ```{r}
@@ -86,45 +86,7 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-```{r}
-library(shiny)
-library(ggplot2)
 
-ui <- fluidPage(
-  titlePanel("Comparing Data between 2023 Denver Nuggets and other seasons"),
-  
-  fluidRow(
-    
-    
-    column(4,
-           varSelectInput("variable", 
-                          "Select Variable to Display", 
-                          data = Denver %>% select("G", "MP", "FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "Age", "PW", "PL", "ORtg", "DRtg", "Pace", "FTr", "3PAr", "TS%", "AeFG%", "ATOV%", "AORB%", "AFT/FGA", "DeFG%", "DTOV%", "DDRB%", "DFT/FGA"))
-    )
-  ),
-  
-  fluidRow(
-    plotOutput("plot")
-  )
-)
-
-server <- function(input, output) {
-  
-  output$plot <- renderPlot({
-    Seasons <- input$Seasons
-    
-    # Assuming Denver is your dataset
-    ggplot(data = Denver %>% filter(Tm == "Denver Nuggets")) + 
-      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
-      xlab("Seasons")
-  })
-}
-
-# Run the application 
-shinyApp(ui = ui, server = server)
-
-
-```
 
 
 ```{r}
@@ -152,7 +114,7 @@ server <- function(input, output) {
     Seasons <- input$Seasons
     
     # Assuming Denver is your dataset
-    ggplot(data = Denver %>% filter(Season == 2023)) + 
+    ggplot(data = Denver) + 
       geom_bar(aes(x = Tm, y = !!sym(input$variable)), stat="identity") +
       xlab("Seasons")
   })
@@ -166,6 +128,59 @@ shinyApp(ui = ui, server = server)
 
 
 
+
+
+```{r}
+ui <- fluidPage(
+  titlePanel("Comparing League Average by different years"),
+  
+  fluidRow(
+    
+            column(4,
+      selectInput(
+        "Position_list",
+        "Select Position",
+        choices = list("PG" = "Point Guard",
+                       "SG" = "Shooting Guard",
+                       "SF" = "Small Forward",
+                       "PF" = "Power Forward",
+                       "C" = "Center",
+                       "6th" = "6th man",
+                       "7th" = "7th man",
+                       "8th" = "8th man",
+                       "9th" = "9th man",
+                       "10th" = "10th man"),
+        selected = "C")
+    ),
+    
+    
+    column(4,
+           varSelectInput("variable", 
+                          "Select Variable to Display", 
+                          data = Denver %>% select("FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB","TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS"))
+    )
+  ),
+  
+  fluidRow(
+    plotOutput("plot")
+  )
+)
+
+server <- function(input, output) {
+  
+  output$plot <- renderPlot({
+    position_list <- input$Position_list
+    
+    
+    ggplot(data = Player %>% filter(Position %in% position_list )) + 
+      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
+      xlab("Seasons")
+  })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+```
 
 
 
