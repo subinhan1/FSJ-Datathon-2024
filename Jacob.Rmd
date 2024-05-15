@@ -9,6 +9,9 @@ Denver <- read_csv("Final Dataset.csv")
 Player <- read_csv("Player Data.csv")
 ```
 
+
+
+
 ```{r}
 library(shiny)
 library(ggplot2)
@@ -131,6 +134,7 @@ shinyApp(ui = ui, server = server)
 
 
 ```{r}
+library(shiny)
 ui <- fluidPage(
   titlePanel("Comparing League Average by different years"),
   
@@ -157,7 +161,7 @@ ui <- fluidPage(
     column(4,
            varSelectInput("variable", 
                           "Select Variable to Display", 
-                          data = Denver %>% select("FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB","TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS"))
+                          data = Player %>% select("FG", "FGA", "FG%", "eFG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB","TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "FGMP"))
     )
   ),
   
