@@ -10,8 +10,6 @@ Player <- read_csv("Player Data.csv")
 ```
 
 
-
-
 ```{r}
 library(shiny)
 library(ggplot2)
@@ -40,9 +38,14 @@ server <- function(input, output) {
     Seasons <- input$Seasons
     
     # Assuming Denver is your dataset
-    ggplot(data = Denver %>% filter(Tm == "Denver Nuggets")) + 
-      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
-      xlab("Seasons")
+    ggplot(data = Denver %>% filter(Tm == "Difference between two data")) + 
+      geom_point(aes(x = Season, y = !!sym(input$variable))) +
+      geom_line(aes(x = Season, y = !!sym(input$variable))) +
+      geom_hline(yintercept = 0, color = "blue") +
+      xlab("Seasons") +
+      theme_classic() +
+  theme(axis.ticks = element_blank(),  
+        panel.grid = element_blank())
   })
 }
 
@@ -51,85 +54,6 @@ shinyApp(ui = ui, server = server)
 
 
 ```
-
-
-```{r}
-ui <- fluidPage(
-  titlePanel("Comparing League Average by different years"),
-  
-  fluidRow(
-    
-    
-    column(4,
-           varSelectInput("variable", 
-                          "Select Variable to Display", 
-                          data = Denver %>% select("G", "MP", "FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "Age", "PW", "PL", "ORtg", "DRtg", "Pace", "FTr", "3PAr", "TS%", "AeFG%", "ATOV%", "AORB%", "AFT/FGA", "DeFG%", "DTOV%", "DDRB%", "DFT/FGA"))
-    )
-  ),
-  
-  fluidRow(
-    plotOutput("plot")
-  )
-)
-
-server <- function(input, output) {
-  
-  output$plot <- renderPlot({
-    Seasons <- input$Seasons
-    
-    # Assuming Denver is your dataset
-    ggplot(data = Denver %>% filter(Tm == "League Average")) + 
-      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
-      xlab("Seasons")
-  })
-}
-
-# Run the application 
-shinyApp(ui = ui, server = server)
-```
-
-
-
-
-
-```{r}
-ui <- fluidPage(
-  titlePanel("Comparing League Average by different years"),
-  
-  fluidRow(
-    
-    
-    column(4,
-           varSelectInput("variable", 
-                          "Select Variable to Display", 
-                          data = Denver %>% select("G", "MP", "FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "Age", "PW", "PL", "ORtg", "DRtg", "Pace", "FTr", "3PAr", "TS%", "AeFG%", "ATOV%", "AORB%", "AFT/FGA", "DeFG%", "DTOV%", "DDRB%", "DFT/FGA"))
-    )
-  ),
-  
-  fluidRow(
-    plotOutput("plot")
-  )
-)
-
-server <- function(input, output) {
-  
-  output$plot <- renderPlot({
-    Seasons <- input$Seasons
-    
-    # Assuming Denver is your dataset
-    ggplot(data = Denver) + 
-      geom_bar(aes(x = Tm, y = !!sym(input$variable)), stat="identity") +
-      xlab("Seasons")
-  })
-}
-
-# Run the application 
-shinyApp(ui = ui, server = server)
-```
-
-
-
-
 
 
 
@@ -161,7 +85,7 @@ ui <- fluidPage(
     column(4,
            varSelectInput("variable", 
                           "Select Variable to Display", 
-                          data = Player %>% select("FG", "FGA", "FG%", "eFG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB","TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "FGMP"))
+                          data = Player %>% select("FG", "FGA", "FG%", "eFG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "FT", "FTA", "FT%", "ORB", "DRB","TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS"))
     )
   ),
   
@@ -177,8 +101,12 @@ server <- function(input, output) {
     
     
     ggplot(data = Player %>% filter(Position %in% position_list )) + 
-      geom_bar(aes(x = Season, y = !!sym(input$variable)), stat="identity") +
-      xlab("Seasons")
+      geom_bar(aes(x = Season, y = !!sym(input$variable), fill = Player), stat="identity") +
+      xlab("Seasons") +
+      theme_classic() +
+  theme(legend.position = "right", 
+        axis.ticks = element_blank(),  
+        panel.grid = element_blank())
   })
 }
 
@@ -188,19 +116,7 @@ shinyApp(ui = ui, server = server)
 
 
 
-```{r}
-Shooting <- read_csv("Shooting data.csv")
-```
 
-```{r}
-names(Shooting)
-```
-
-
-```{r}
-ggplot(Denver, aes(x= ORtg, y= DRtg, color = Tm)) +
-  geom_point()
-```
 
 
 
