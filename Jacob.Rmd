@@ -188,7 +188,19 @@ shinyApp(ui = ui, server = server)
 
 
 
+```{r}
+Shooting <- read_csv("Shooting data.csv")
+```
 
+```{r}
+names(Shooting)
+```
+
+
+```{r}
+ggplot(Denver, aes(x= ORtg, y= DRtg, color = Tm)) +
+  geom_point()
+```
 
 
 
